@@ -60,7 +60,7 @@ class Concept:
     @classmethod
     def add_concept(cls, value):
         node = cls(value)
-        print node.get_stats()
+#        print node.get_stats()
 
     @classmethod
     def merge_concepts(cls, parent, child):
