@@ -13,6 +13,8 @@ while True:
     sckt.send('gimme')
     message = sckt.recv()
     print 'Received %s from server' % (message, )
+    if message == "No more or very less concepts to judge":
+        continue
     judge = raw_input('Judgment (1 if 1st is better, else 2): ')
     message = message + ':' + judge
     sckt.send(message)

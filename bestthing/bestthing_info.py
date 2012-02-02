@@ -1,7 +1,10 @@
 #!/usr/bin/python
 
+import sys
 import zmq
 from concept import Concept
+
+Concept.setup('./.app.cfg')
 
 def add_concept(message):
     print "message = %s" % str(message)
@@ -54,11 +57,11 @@ while True:
             if c1 == 'okay':
                 judge_concepts_sckt.send('okay')
             else:
-                judge_concepts_sckt.send(",".join((c1, c2)))
+                judge_concepts_sckt.send_unicode(",".join((c1, c2)))
     if get_standings_sckt in socks and socks[get_standings_sckt] == zmq.POLLIN:
         message = get_standings_sckt.recv()
         standings = get_standings_handler(message)
-        get_standings_sckt.send(str(standings))
+        get_standings_sckt.send_unicode(str(standings))
         
 
 if __name__ == "__main__":
