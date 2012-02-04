@@ -11,6 +11,7 @@ This emulates the project at [bestthing.info](http://bestthing.info/)
 the copied file
 file to .app.cfg
 1. Start MySQL server
+1. Create a database as per the schema in file schema.sql
 1. Start tonardo application: python app.py
 1. Hit [link](http://localhost:8889/)
 
