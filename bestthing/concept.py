@@ -158,17 +158,16 @@ class Concept:
 
     @classmethod
     def handle_judgment(cls, c1, c2, judgment):
-        c1 = c1.strip().lower()
-        c2 = c2.strip().lower()
-        if c1 in Concept.value_to_concept and c2 in Concept.value_to_concept:
-            n1 = Concept.id_to_concept[Concept.value_to_concept[c1]]
-            n2 = Concept.id_to_concept[Concept.value_to_concept[c2]]
-            if n1.__score != n2.__score:
-                return
-            if judgment == '1':
-                Concept.merge_concepts(parent = n1, child = n2)
-            else:
-                Concept.merge_concepts(parent = n2, child = n1)
+        c1 = int(c1.strip())
+        c2 = int(c2.strip())
+        n1 = Concept.id_to_concept[c1]
+        n2 = Concept.id_to_concept[c2]
+        if n1.__score != n2.__score:
+            return
+        if judgment == '1':
+            Concept.merge_concepts(parent = n1, child = n2)
+        else:
+            Concept.merge_concepts(parent = n2, child = n1)
 
     @classmethod
     def get_concepts_to_judge(cls):
@@ -176,7 +175,7 @@ class Concept:
         a = random.randint(0, len(keys) - 1)
         (c1, c2) = Concept.id_to_concept[keys[a]].get_concepts()
         if c2 is not None:
-            return (c1.__value, c2.__value)
+            return ((str(c1.__id), c1.__value), (str(c2.__id), c2.__value))
         if len(keys) < 2:
             sys.stdout.write('No more concepts to judge')
             sys.stdout.flush()
@@ -184,8 +183,21 @@ class Concept:
         b = a
         while b == a:
             b = random.randint(0, len(keys) - 1)
-        return (Concept.id_to_concept[keys[a]].__value,\
-                Concept.id_to_concept[keys[b]].__value)
+        return ((str(keys[a]), Concept.id_to_concept[keys[a]].__value),\
+                (str(keys[b]), Concept.id_to_concept[keys[b]].__value))
+
+    @classmethod
+    def top_10_concepts(cls):
+        cursor = Concept.get_db_conn().cursor()
+        cursor.execute("""SELECT value FROM concept ORDER BY score DESC LIMIT 10""")
+        top10 = []
+        while True:
+            row = cursor.fetchone()
+            if row is None:
+                break
+            top10.append(row[0])
+        cursor.close()
+        return top10
 
     @classmethod
     def sorted_concepts(cls):

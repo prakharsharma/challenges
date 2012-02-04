@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <p><em>Current top 10 concepts are:</em></p>
+    <ol>
+        {% for concept in top10 %}
+            <li>
+                <p>{{ concept }}</p>
+            </li>
+        {% end %}
+    </ol>
+{% end %}
+

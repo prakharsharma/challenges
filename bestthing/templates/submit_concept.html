@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <p>Submit a new concept</p><br />
+    <form action="/submit" method="post" class="compose">
+        <em>New concept </em><input type="text" name="concept" /><br />
+        <input type="submit" value="Submit" />
+    </form>
+{% end %}
+

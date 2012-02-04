@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <p>What is best?</p>
+  <form action="/" method="post" class="compose">
+    <input type="radio" name="concept" value={{ concepts[0][0] }} /> {{ concepts[0][1] }}<br /><br />
+    <em> or</em><br /><br />
+    <input type="radio" name="concept" value={{ concepts[1][0] }} /> {{ concepts[1][1] }}<br /><br />
+    <input type="submit" value="Submit" />
+  </form>
+{% end %}
+
