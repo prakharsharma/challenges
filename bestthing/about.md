@@ -21,7 +21,7 @@ Pure awesomeness!
 # How this works?
 If you are interested in the technology behind this site, all your 
 questions can be answered at
-[github](https://github.com/prakharsharma/challenges).
+[github](https://github.com/prakharsharma/challenges/tree/master/bestthing).
 
 # Disclaimer
 If you find some of the concepts to be really offensive, then it just means
