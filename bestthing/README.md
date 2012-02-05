@@ -1,5 +1,7 @@
 # bestthing
 This emulates the project at [bestthing.info](http://bestthing.info/)
+A running installation of the project is available
+[here](http://prakhar.dyndns.org:8889/)
 
 # Requirements
 - The implementation uses ZeroMQ (>= 2.1)
