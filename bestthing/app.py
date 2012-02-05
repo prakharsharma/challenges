@@ -126,7 +126,7 @@ class SubmitConceptHandler(BaseHandler):
     def post(self):
         concept = self.get_argument('concept').strip()
         self.zmq_client.submit_concept(concept)
-        self.redirect('/')
+        self.redirect('/submit')
 
 
 class LeaderboardHandler(BaseHandler):

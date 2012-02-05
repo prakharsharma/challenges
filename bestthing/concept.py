@@ -172,6 +172,8 @@ class Concept:
     @classmethod
     def get_concepts_to_judge(cls):
         keys = Concept.root_concepts.keys()
+        if len(keys) == 0:
+            return (None, None)
         a = random.randint(0, len(keys) - 1)
         (c1, c2) = Concept.id_to_concept[keys[a]].get_concepts()
         if c2 is not None:
