@@ -125,6 +125,8 @@ class SubmitConceptHandler(BaseHandler):
 
     def post(self):
         concept = self.get_argument('concept').strip()
+        if len(concept) >= 1000:
+            self.redirect('/submit')
         self.zmq_client.submit_concept(concept)
         self.redirect('/submit')
 

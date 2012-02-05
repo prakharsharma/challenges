@@ -1,5 +1,5 @@
 # What the heck is this?
-- This is a site ridiculous comparisons.
+- This is a site of ridiculous comparisons.
 - This site is a shameless rip off (and a bad one) of
 [bestthing.info](http://bestthing.info/)
 - So, just like bestthing.info it is a social experiment to find the best 
