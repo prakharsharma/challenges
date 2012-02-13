@@ -245,6 +245,12 @@ class Concept:
         parseCfgFile(cfgFile, 'database', Concept.dbCfg)
         Concept.load_from_db()
 
+    @classmethod
+    def keep_db_conn_alive(cls):
+        cursor = Concept.get_db_conn().cursor()
+        cursor.execute('SELECT 1')
+        cursor.close()
+
 
 if __name__ == "__main__":
     pass

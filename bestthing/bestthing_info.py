@@ -2,9 +2,19 @@
 
 import sys
 import zmq
+import ConfigParser
 from concept import Concept
 
+
 Concept.setup('./.app.cfg')
+
+
+def parseCfgFile(_path, sectionName, sectionCfg):
+    config = ConfigParser.ConfigParser()
+    config.read(_path)
+    for k, v in config.items(sectionName):
+        sectionCfg[k] = v
+
 
 def add_concept(message):
     print "message = %s" % str(message)
@@ -26,21 +36,35 @@ def get_standings_handler(message):
     return Concept.top_10_concepts()
 
 
+def keep_alive_handler():
+    Concept.keep_db_conn_alive()
+
+
+appCfg = {}
+parseCfgFile('./.app.cfg', 'global', appCfg)
 context = zmq.Context()
 #
 add_concept_sckt = context.socket(zmq.REP)
-add_concept_sckt.bind('tcp://*:5555')
+add_concept_sckt.bind('tcp://*:' +\
+        appCfg['add_concept_sckt_port'].strip('"').strip("'"))
 
 judge_concepts_sckt = context.socket(zmq.REP)
-judge_concepts_sckt.bind('tcp://*:6666')
+judge_concepts_sckt.bind('tcp://*:' +\
+        appCfg['judge_sckt_port'].strip('"').strip("'"))
 
 get_standings_sckt = context.socket(zmq.REP)
-get_standings_sckt.bind('tcp://*:7777')
+get_standings_sckt.bind('tcp://*:' +\
+        appCfg['leaderboard_sckt_port'].strip('"').strip("'"))
+
+keep_alive_sckt = context.socket(zmq.REP)
+keep_alive_sckt.bind('tcp://*:' +\
+        appCfg['keep_alive_sckt_port'].strip('"').strip("'"))
 
 poller = zmq.Poller()
 poller.register(add_concept_sckt, zmq.POLLIN)
 poller.register(judge_concepts_sckt, zmq.POLLIN)
 poller.register(get_standings_sckt, zmq.POLLIN)
+poller.register(keep_alive_sckt, zmq.POLLIN)
 
 while True:
     socks = dict(poller.poll())
@@ -63,6 +87,10 @@ while True:
         message = get_standings_sckt.recv_unicode()
         standings = get_standings_handler(message)
         get_standings_sckt.send_unicode("".join(standings))
+    if keep_alive_sckt in socks and socks[keep_alive_sckt] == zmq.POLLIN:
+        message = keep_alive_sckt.recv_unicode()
+        keep_alive_handler()
+        keep_alive_sckt.send_unicode('okay')
         
 
 if __name__ == "__main__":
